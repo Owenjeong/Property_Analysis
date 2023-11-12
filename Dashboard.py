@@ -3,6 +3,9 @@ import pandas as pd
 from geopy.geocoders import Nominatim
 import numpy as np
 import pydeck as pdk
+import requests
+from io import StringIO
+
 
 st.set_page_config(page_title="Property Analysis",
                   page_icon=None, 
@@ -14,7 +17,8 @@ st.set_page_config(page_title="Property Analysis",
 @st.cache_data
 def allhome_toptier():  
     data = "https://www.dropbox.com/scl/fi/2akzxhadsxbam2maf6jgr/all_home_toptier_0923.csv?rlkey=wphpn8w4hsnwdae5a17jtpq75&dl=0"
-    # https://www.dropbox.com/scl/fi/2akzxhadsxbam2maf6jgr/all_home_toptier_0923.csv?rlkey=wphpn8w4hsnwdae5a17jtpq75&dl=0
+    download = requests.get(url).content
+    data = StringIO(download.decode('utf-8'))
     df = pd.read_csv(data)
     df = df.loc[df['State'].str.contains('IL')]
     return df
