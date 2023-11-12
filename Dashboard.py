@@ -16,7 +16,7 @@ st.set_page_config(page_title="Property Analysis",
 
 @st.cache_data
 def allhome_toptier():  
-    url = "https://www.dropbox.com/scl/fi/2akzxhadsxbam2maf6jgr/all_home_toptier_0923.csv?rlkey=wphpn8w4hsnwdae5a17jtpq75&dl=0"
+    url = "https://www.dropbox.com/scl/fi/2akzxhadsxbam2maf6jgr/all_home_toptier_0923.csv?rlkey=wphpn8w4hsnwdae5a17jtpq75&dl=1"
     download = requests.get(url).content
     data = StringIO(download.decode('utf-8'))
     df = pd.read_csv(data)
