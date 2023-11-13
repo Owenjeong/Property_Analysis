@@ -125,46 +125,38 @@ sorted_top30 = top30[['RegionName','lat', 'lon', 'Rate']]
 
 sorted_top30['Rate_str'] = (sorted_top30['Rate']*100).astype(str)
 
+view = pdk.data_utils.compute_view(sorted_top30[["lon", "lat"]])
+view.pitch = 50
+view.bearing = 0
 
-st.pydeck_chart(pdk.Deck(
-    map_style=None,
-    initial_view_state=pdk.ViewState(
-        latitude=top30['lat'].mean(),
-        longitude=top30['lon'].mean(),
-        zoom=9,
-        pitch=50,     
-    ),
-    layers=[
-        pdk.Layer(
-        'HexagonLayer',
-        data=sorted_top30,
-        get_position='[lon, lat]',
-        get_elevation ='Rate_str',
-        get_fill_color='[255, (1 - Rate)*255, 0]',  # 'min(Rate, 1)'을 'Rate'로 수정합니다.
-        radius=1500,
-        elevation_scale=100,
-        elevation_range=[0, 100],
-        pickable=True,
-        extruded=True,
-        ),
-        pdk.Layer(
-            'ScatterplotLayer',
-            data=sorted_top30,
-            get_position='[lon, lat]',
-            get_color='[200, 30, 0, 160]',
-            get_radius=1500,
-        ),
-        pdk.Layer(
-            'TextLayer',
-            data=sorted_top30,
-            get_position='[lon, lat]',
-            get_text='RegionName',
-            get_color=[0, 0, 0],
-            get_size=16,
-            get_alignment_baseline="'bottom'",
-        )
-    ],
-))
+column_layer = pdk.Layer(
+    "ColumnLayer",
+    data=sorted_top30,
+    get_position=["lon", "lat"],
+    get_elevation="Rate_str",
+    elevation_scale=500,
+    radius=700,
+    get_fill_color=['Rate*200', '255-Rate*200', '255-Rate*200', 140],
+    pickable=True,
+    auto_highlight=True,
+)
+
+tooltip = {
+    "html": "The area: <b>{RegionName}</b>, Increasing of rate: <b>{Rate_str}%</b>",
+    "style": {"background": "grey", "color": "white", "font-family": '"Helvetica Neue", Arial', "z-index": "10000"},
+}
+
+# pdk.Deck 호출 시 'layers' 인자로 레이어를 전달합니다.
+r = pdk.Deck(
+    layers=[column_layer],
+    initial_view_state=view,
+    tooltip=tooltip,
+    map_provider="mapbox",
+    map_style=None,  #pdk.map_styles.SATELLITE
+)
+
+# Streamlit의 st.pydeck_chart 함수를 사용하여 차트를 표시합니다.
+st.pydeck_chart(r)
 
 
 # # python
