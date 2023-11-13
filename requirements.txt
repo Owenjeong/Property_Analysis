@@ -4,3 +4,5 @@ pydeck==0.8.1b0
 geopy==2.4.0
 numpy==1.25.0
 requests==2.30.0
+mitoinstaller==0.0.262
+mitosheet==0.1.528
