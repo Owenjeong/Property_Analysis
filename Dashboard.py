@@ -125,9 +125,11 @@ sorted_top30 = top30[['RegionName','lat', 'lon', 'Rate']]
 
 sorted_top30['Rate_str'] = (sorted_top30['Rate']*100).astype(str)
 
-view = pdk.data_utils.compute_view(sorted_top30[["lon", "lat"]])
-view.pitch = 50
-view.bearing = 0
+view = pdk.ViewState(latitude=top30['lat'].mean(),
+longitude=top30['lon'].mean(),
+pitch = 50,
+zoom= 7,
+bearing = 0)
 
 column_layer = pdk.Layer(
     "ColumnLayer",
