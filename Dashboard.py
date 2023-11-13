@@ -163,7 +163,7 @@ with col1:
 with col1:
   option = st.selectbox(
       'Select an option',
-          ('All Home Toptier', 'All Home Midtier', 'All Home Lowtier'))
+          ('All Home Toptier', 'All Home Bottomtier', 'All Home SFR/Condo Seasonally Adjusted', 'Single Family Home', 'Condo/Co-op', '2 Beds', '3 Beds', '4 Beds', '5+ Beds'))
 
 
 if option =='All Home Toptier': 
