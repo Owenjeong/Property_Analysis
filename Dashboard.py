@@ -5,6 +5,7 @@ import numpy as np
 import pydeck as pdk
 import requests
 from io import StringIO
+from mitosheet.streamlit.v1 import spreadsheet
 
 
 st.set_page_config(page_title="Property Analysis",
@@ -208,7 +209,7 @@ elif option_yr == '20 Years':
 #################################################################################################
 st.write('---')
 st.subheader('IL Property Locations')
-st.dataframe(sorted_il_result)
+new_dfs, code = spreadsheet(sorted_il_result)
 st.write('---')
 st.write(f'Selected Data: {option}')
 st.write(f'Selected Year: {option_yr}')
