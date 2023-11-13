@@ -126,7 +126,7 @@ sorted_top30 = top30[['RegionName','lat', 'lon', 'Rate']]
 sorted_top30['Rate_str'] = (sorted_top30['Rate']*100).astype(str)
 
 st.dataframe(sorted_top30)
-st.write(len(soted_top30))
+st.write(len(sorted_top30))
 
 
 view = pdk.ViewState(latitude=top30['lat'].mean(),
