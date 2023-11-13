@@ -156,8 +156,9 @@ def lat_long(sorted_il_result):
 col1,col2,col3 = st.columns([1,1,1])
 ##############################################################################################
 
-st.header('Illinois Property')
-st.subheader('Data up to 09-2023')
+with col1:
+  st.header('Illinois Property')
+  st.subheader('Data up to 09-2023')
 
 with col1:
   option = st.selectbox(
