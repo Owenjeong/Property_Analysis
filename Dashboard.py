@@ -13,6 +13,8 @@ st.set_page_config(page_title="Property Analysis",
                   initial_sidebar_state="auto", 
                   menu_items=None)
 
+####################################################################################################
+# Data
 
 @st.cache_data
 def allhome_toptier():  
@@ -22,7 +24,78 @@ def allhome_toptier():
     df = pd.read_csv(data)
     df = df.loc[df['State'].str.contains('IL')]
     return df
+@st.cache_data
+def allhome_lowtier():  
+    url = "https://www.dropbox.com/scl/fi/grem718bm1vzm12364p84/allhome_bottomtier_0923.csv?rlkey=rosf59v9sq4bm4vsf4bgcb1zs&dl=1"
+    download = requests.get(url).content
+    data = StringIO(download.decode('utf-8'))    
+    df = pd.read_csv(data)
+    df = df.loc[df['State'].str.contains('IL')]
+    return df
 
+@st.cache_data
+def allhome_SFR_Condo_seasonallyAdj():  
+    url = "https://www.dropbox.com/scl/fi/8by35o8aezhoo90ykfzdu/allhome_sfr_condo_seanallyAdjusted.csv?rlkey=jd2tssz69beja59y6p39xgee8&dl=1"
+    download = requests.get(url).content
+    data = StringIO(download.decode('utf-8'))      
+    df = pd.read_csv(data)
+    df = df.loc[df['State'].str.contains('IL')]
+    return df
+
+@st.cache_data
+def single_family_home():  
+    url = "https://www.dropbox.com/scl/fi/3ge6o3e9bowxioeh9fpg8/single_family_home.csv?rlkey=un7gn86oewlc9sje5i2dmn3r6&dl=1"
+    download = requests.get(url).content
+    data = StringIO(download.decode('utf-8'))  
+    df = pd.read_csv(data)
+    df = df.loc[df['State'].str.contains('IL')]
+    return df
+
+@st.cache_data
+def condo():  
+    url = "https://www.dropbox.com/scl/fi/zhki8wb907bdvc1pv7w39/condo.csv?rlkey=z0sgjgtscb253104jfb8a70wm&dl=1"
+    download = requests.get(url).content
+    data = StringIO(download.decode('utf-8'))  
+    df = pd.read_csv(data)
+    df = df.loc[df['State'].str.contains('IL')]
+    return df
+
+@st.cache_data
+def twobed():  
+    url = "https://www.dropbox.com/scl/fi/4myql4hrff7o2wr2ytwfs/2bed_0923.csv?rlkey=5y5y8f92tgg8ldpvtzxl1swlq&dl=1"
+    download = requests.get(url).content
+    data = StringIO(download.decode('utf-8'))  
+    df = pd.read_csv(data)
+    df = df.loc[df['State'].str.contains('IL')]
+    return df
+
+@st.cache_data
+def thrbed():  
+    url = "https://www.dropbox.com/scl/fi/x8xof6xrise83p272ckg3/3bed_0923.csv?rlkey=id4220yqd3xwt1z87nv20iayz&dl=1"
+    download = requests.get(url).content
+    data = StringIO(download.decode('utf-8'))  
+    df = pd.read_csv(data)
+    df = df.loc[df['State'].str.contains('IL')]
+    return df
+
+@st.cache_data
+def fourbed():  
+    url = "https://www.dropbox.com/scl/fi/c3l77mermil080ae9zdpr/4bed_0923.csv?rlkey=y1xaf0mrnkwjsh1t85zt93x7e&dl=1"
+    download = requests.get(url).content
+    data = StringIO(download.decode('utf-8'))  
+    df = pd.read_csv(data)
+    df = df.loc[df['State'].str.contains('IL')]
+    return df
+
+@st.cache_data
+def fivebed():  
+    url = "https://www.dropbox.com/scl/fi/11ja34jctqbup6f4hpuqg/5bed_0923.csv?rlkey=7azu6wai7gt011f2ej5m2zuqh&dl=1"
+    download = requests.get(url).content
+    data = StringIO(download.decode('utf-8'))  
+    df = pd.read_csv(data)
+    df = df.loc[df['State'].str.contains('IL')]
+    return df
+########################################################################################################
 
 def a_year(df):
     df['Rate'] = (df[df.columns[-1]] - df[df.columns[-13]]) / df[df.columns[-13]]
@@ -86,23 +159,36 @@ col1,col2,col3 = st.columns([1,1,1])
 st.header('Illinois Property')
 st.subheader('Data up to 09-2023')
 
-option = st.selectbox(
-    'Select an option',
-        ('All Home Toptier', 'All Home Midtier', 'All Home Lowtier'))
+with col1:
+  option = st.selectbox(
+      'Select an option',
+          ('All Home Toptier', 'All Home Midtier', 'All Home Lowtier'))
 
 
 if option =='All Home Toptier': 
     df = allhome_toptier()
-elif option == 'All Home Midtier':
-    df = midtier()
-elif option == 'All Home Lowtier':
-    df = lowtier()
+elif option == 'All Home Bottomtier':
+    df = allhome_lowtier()
+elif option == 'All Home SFR/Condo Seasonally Adjusted':
+    df = allhome_SFR_Condo_seasonallyAdj()
+elif option == 'Single Family Home':
+    df = single_family_home()
+elif option == 'Condo/Co-op':
+    df = condo()
+elif option == '2 Beds':
+    df = twobed()
+elif option == '3 Beds':
+    df = thrbed()
+elif option == '4 Beds':
+    df = fourbed()
+elif option == '5+ Beds':
+    df = fivebed()
     
-
-
-option_yr = st.selectbox(
-    'Choose Year'
-    , ('1 Year','3 Years','5 Years','10 Years','20 Years'))
+#################################################################################################
+with col1:
+  option_yr = st.selectbox(
+      'Choose Year'
+      , ('1 Year','3 Years','5 Years','10 Years','20 Years'))
 
 
 
@@ -117,7 +203,14 @@ elif option_yr == '5 Years':
 elif option_yr == '20 Years':
     sorted_il_result = tw_year(df)
 
+
+#################################################################################################
+st.write('---')
+st.subheader('IL Property Locations')
 st.dataframe(sorted_il_result)
+st.write('---')
+st.write(f'Selected Data: {option}')
+st.write(f'Selected Year: {option_yr}')
 
 top30 = lat_long(sorted_il_result)
 
@@ -150,7 +243,7 @@ tooltip = {
     "style": {"background": "grey", "color": "white", "font-family": '"Helvetica Neue", Arial', "z-index": "10000"},
 }
 
-# pdk.Deck 호출 시 'layers' 인자로 레이어를 전달합니다.
+
 r = pdk.Deck(
     layers=[column_layer],
     initial_view_state=view,
@@ -159,32 +252,8 @@ r = pdk.Deck(
     map_style=None,  #pdk.map_styles.SATELLITE
 )
 
-# Streamlit의 st.pydeck_chart 함수를 사용하여 차트를 표시합니다.
+
 st.pydeck_chart(r)
 
 
-# # python
-# layers = []
-
-# for index, row in top30.iterrows():
-#     layers.append(
-#         pdk.Layer(
-#             'ScatterplotLayer',
-#             data=pd.DataFrame({'lon': [row['lon']], 'lat': [row['lat']], 'Rate': [row['Rate']]}),
-#             get_position='[lon, lat]',
-#             get_color="[200, 30, 0, 160 + row['Rate'] * 100]",
-#             get_radius='Rate * 2000',
-#         )
-#     )
-
-# st.pydeck_chart(pdk.Deck(
-#     map_style=None,
-#     initial_view_state=pdk.ViewState(
-#         latitude=top30['lat'].mean(),
-#         longitude=top30['lon'].mean(), # Chicago
-#         zoom=9,
-#         pitch=50,
-#     ),
-#     layers=layers,
-# ))
 
