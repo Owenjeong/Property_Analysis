@@ -123,7 +123,7 @@ top30 = lat_long(sorted_il_result)
 
 sorted_top30 = top30[['RegionName','lat', 'lon', 'Rate']]
 
-sorted_top30['Rate_str'] = (sorted_top30['Rate']*100).astype(str)
+sorted_top30['Rate_str'] = (sorted_top30['Rate']*100).astype(int)
 
 st.dataframe(sorted_top30)
 st.write(len(sorted_top30))
